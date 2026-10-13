@@ -1,0 +1,392 @@
+=====================================================================
+GharMate - COMPLETE SETUP GUIDE (Roman Urdu)
+Realtime Database + GitHub JSON + imgbb + Admin
+=====================================================================
+
+FILES
+-----
+1. gharmate-hosting.html   -> Asli app (ek hi HTML file)
+2. database-rules-A.txt    -> Realtime Database rules (abhi ke app ke liye)
+3. database-rules-B.txt    -> Realtime Database rules (poori tarah locked)
+4. GharMate-Guide.txt      -> Ye guide
+
+AHAM BAAT (pehle parh lein)
+---------------------------
+claude.ai ke link par app chalti to hai, lekin wahan doosri sites ko
+network requests block hoti hain. Is liye wahan Realtime Database, GitHub
+aur imgbb KAAM NAHI KARTE. Inhein chalane ke liye app ko khud host karna
+hoga (neeche Step 1: GitHub Pages).
+
+
+---------------------------------------------------------------------
+APP KA NIZAAM (kaise kaam karta hai)
+---------------------------------------------------------------------
+* Browser (localStorage): har device par data ki local copy.
+* Realtime Database (REST): accounts + har user ka data, live sync.
+  Firebase SDK ya Firebase Login istemal NAHI hota.
+* GitHub JSON: poore data ka backup / restore (Admin ke haath se).
+* imgbb: bijli ke bill ki tasveer ka hosting. Database mein sirf link.
+* Admin: nazimmustafa911@gmail.com se register hone wala account.
+
+
+=====================================================================
+STEP 1: APP KO HOST KARNA (GitHub Pages)
+=====================================================================
+Ye repo PUBLIC ho sakta hai, is mein sirf app ki file hogi (koi data nahi).
+
+1. github.com par login karein.
+2. New repository banayein, naam mis. "gharmate-app", Public.
+3. "Add file" > "Upload files" se gharmate-hosting.html upload karein.
+   File ka naam badal kar  index.html  kar dein (zaroori).
+4. Commit karein.
+5. Repo ki Settings > Pages > Source: "Deploy from a branch"
+   Branch: main, folder: / (root) > Save.
+6. 1-2 minute baad link milega:
+   https://AAPKA-USERNAME.github.io/gharmate-app/
+   Yehi aap ki app ka asli link hai.
+
+
+=====================================================================
+STEP 2: REALTIME DATABASE BANANA
+=====================================================================
+1. console.firebase.google.com par jayein, "Create a project".
+   Google Analytics zaroori nahi, band kar sakte hain.
+2. Left menu: Build > Realtime Database > "Create Database".
+3. Location chunein (Pakistan ke liye nazdeek: Singapore).
+4. "Start in locked mode" chunein > Enable.
+5. Upar database ka URL milega, copy karein. Misal:
+     https://gharmate-12345-default-rtdb.firebaseio.com
+   (Singapore/Europe mein aisa hota hai:
+     https://gharmate-12345-default-rtdb.asia-southeast1.firebasedatabase.app)
+6. "Rules" tab kholein. database-rules-A.txt ka poora matan paste
+   karein aur "Publish" dabayein.
+7. Firebase mein Authentication / Web app / SDK add karne ki zaroorat
+   NAHI.
+
+
+=====================================================================
+STEP 3: PEHLI BAAR APP CHALANA (Admin banana)
+=====================================================================
+1. Apni GitHub Pages wali link kholein.
+2. Sab se pehle  nazimmustafa911@gmail.com  se "Naya Account Banayein".
+   Ye pehle karna zaroori hai taake Admin aap hon.
+   (Purana data agar isi browser mein tha to Admin account mein lag jata
+   hai.)
+3. Login karein > Home > "Admin Panel" > "Realtime DB, GitHub aur imgbb
+   Settings".
+4. "Database URL" mein Step 2 ka URL paste karein > "Save aur Connect".
+   - Server khali ho to local data upload ho jata hai.
+   - Server par data ho to sawal aata hai:
+       OK     = server ka data lein (local replace)
+       Cancel = local data server par bhej dein (server overwrite)
+5. Upar status dekhein: "Synced".
+
+NAYE DEVICE / NAYE USER KE LIYE
+Users ko Database ka koi button ya setting NAHI dikhti. Sirf Admin
+(nazimmustafa911@gmail.com se login ke baad) Admin Panel aur Cloud
+Settings dekh sakta hai. Users ke devices ko URL do tareeqon se milta hai:
+ A) Hosted index.html mein is line mein URL daal dein (GitHub par file
+    edit karke):   const PRESET_DB='';
+    misal:         const PRESET_DB='https://xxxx-default-rtdb.firebaseio.com';
+    Phir har device par app khud connect ho jati hai.
+ B) Admin Panel > Cloud Settings > "Users ke liye link copy karein".
+    Ye link (?db=...) users ko bhejein, pehli bar kholne par device
+    khud connect ho jata hai.
+Connect hue baghair naya device purane accounts nahi dekh sakta.
+Dhyan: URL address bar mein nazar aa sakta hai aur jis ke paas URL ho wo
+seedha Database se baat kar sakta hai (Rules A mein). Sirf buttons chhupane
+se asli pabandi nahi lagti, neeche Security dekhein.
+
+
+=====================================================================
+STEP 4: imgbb API KEY
+=====================================================================
+1. api.imgbb.com par jayein, login karein, "Get API key".
+2. Key copy karein.
+3. App > Admin Panel > Cloud Settings > "imgbb API key" mein paste >
+   "Key Mehfooz Karein".
+4. Ab jab koi malik ghar ke saath bijli bill ki TASVEER upload karega,
+   wo imgbb par jayegi aur sirf link save hoga.
+
+Dhyan dein:
+- Ye key Realtime Database ke zariye sab users ko milti hai taake wo
+  upload kar saken.
+- imgbb ke links public hote hain (link jaan'ne wala tasveer dekh sakta
+  hai). Bill par hassas cheezein ho to khayal rakhein.
+- PDF imgbb par nahi jati, wo local hi rehti hai (600KB tak).
+- Upload fail ho jaye to tasveer local mehfooz ho jati hai.
+
+
+=====================================================================
+STEP 5: GitHub JSON BACKUP
+=====================================================================
+Backup ke liye ALAG PRIVATE repo banayein (data public nahi hona chahiye,
+is mein password hash bhi hote hain).
+
+1. GitHub > New repository > naam "gharmate-data" > PRIVATE.
+2. Settings (apne profile ki) > Developer settings >
+   Personal access tokens > Fine-grained tokens > Generate new token.
+3. Expiration chunein. "Repository access" mein "Only select
+   repositories" > sirf gharmate-data.
+4. "Repository permissions" mein  Contents: Read and write  chunein.
+5. Generate karke token copy karein (dobara nahi dikhega).
+6. App > Admin Panel > Cloud Settings > GitHub:
+     Owner       = aap ka GitHub username
+     Repository  = gharmate-data
+     Branch      = main
+     File path   = gharmate-data.json
+     Token       = copy kiya hua token
+   > "Settings Mehfooz Karein".
+   Token sirf isi device par rehta hai, kisi ko sync nahi hota.
+7. "JSON Save" = poora data GitHub file mein save.
+   "JSON Load" = GitHub se data wapas lana. Pehle confirm poochta hai,
+   mojooda data replace hota hai aur recovery copy browser mein rakhi
+   jati hai (key: gharmate_recovery).
+
+
+=====================================================================
+ROZANA KA ISTEMAAL
+=====================================================================
+MALIK (naya user)
+1. Account banaye aur login kare.
+2. Ghar tab > "+" > poori tafseel bhare: ghar ki maloomat, kamray,
+   sahuliyat, malik ka naam/CNIC/phone, malkiyat ka saboot, bijli bill
+   (reference, mahina, tasveer) aur tasdeeq ka tick.
+3. Koi cheez reh jaye to ghar submit nahi hota.
+4. Ghar "Admin approval ka intezaar" mein jata hai. Approve hone tak us
+   mein kirayedaar shamil nahi ho sakta.
+5. Reject ho to details theek karke dobara save kare (phir pending).
+
+ADMIN
+- Admin Panel mein pending gharon ki POORI tafseel aur bill dekh kar
+  Approve / Reject.
+- Har account: naam, email, phone, ghar/kirayedaar/adaigi ginti.
+- "Data Kholein / Edit": us account ka poora data dekhna, edit, delete.
+  Upar orange patti "Admin mode" dikhti hai, "Wapas" se admin par.
+- Block: 1 din / 7 din / 30 din (aarzi) ya Hamesha. Unblock bhi.
+  Block hone par user agli bar screen badalte hi bahar ho jata hai.
+- Account delete: account aur poora data (Database se bhi) hat jata hai.
+
+HAR USER KO SIRF APNA KIRDAR
+- Malik sirf apna data dekhta hai.
+- Admin Panel aur Cloud Settings sirf Admin ko dikhte hain.
+  (Dhyan: ye app ke andar ki pabandi hai, neeche Security dekhein.)
+
+
+=====================================================================
+DATABASE KA STRUCTURE (Realtime Database)
+=====================================================================
+/gharmate
+   /users/{userId}
+        id, name, email, phone, role (Admin | Malik),
+        country, city, pw (SHA-256 hash, 64 harf),
+        block ("" | "perm" | "temp"), until (ms timestamp), created
+   /cfg
+        countries/{Mulk}/cur, cities[]
+        imgKey              (imgbb key)
+   /ws/{userId}             (har user ka apna workspace)
+        houses[]   id, name, country, city, area, address, type, size,
+                   unit, floors, rent, adv, feat[], rooms[{t,n}],
+                   ap (pending | approved | rejected),
+                   ownName, ownCnic, ownPhone, ownDoc, ownDocNo,
+                   billRef, billMonth, bill{name,type,data}
+        tenants[]  id, name, phone, cnic, house, in, active
+        pays[]     id, tid, period, amt, date, st, method, note
+        exp[]      id, cat, house, amt, date, method, vendor, note, ref
+        cmp[]      id, title, desc, house, pri, cat, st, staff, cost,
+                   date, done
+        rem[]      id, pid, date, status
+   /ts
+
+Note: Realtime Database khali arrays (aur khali cheezein) save nahi
+karta. App load par unhein khud theek kar leti hai.
+
+
+=====================================================================
+SECURITY - SACH BAAT
+=====================================================================
+Firebase Login istemal nahi hota, is liye Database ke rules ye pehchan
+nahi sakte ke kaun request bhej raha hai.
+
+Rules A (abhi ke app ke liye):
+  - Sirf /gharmate khula hai, baqi sab band.
+  - Data ki shakal ki jaanch hoti hai (zaroori fields, role sirf
+    Admin/Malik, pw hash 64 harf).
+  - Lekin jis ke paas Database URL ho wo sab padh aur likh sakta hai
+    (password hash, imgbb key, sab ka data).
+  - Admin ki pehchan sirf app ke andar hai. Koi URL se seedha data badal
+    sakta hai.
+  => URL kisi ko na dein. Ye sirf shuru karne ka darja hai.
+
+Rules B (poori tarah locked):
+  - Sab kuch band. Sirf "database secret" wale access kar sakte hain.
+  - Is mode mein naye device ke login page par Access key ki field
+    chahiye (abhi app mein sirf Admin ke Cloud page par hai, jis tak
+    login ke baad hi pahunch sakte hain). Is liye ye mode abhi
+    mukammal nahi, app mein chhota update chahiye.
+  - Database secret purana (legacy) tareeqa hai, naye projects mein
+    Project settings > Service accounts > Database secrets mein
+    shayad na ho.
+
+Password: SHA-256 hash ke taur par save hota hai, lekin ye tez hash
+hai, is liye kamzor passwords aasani se tod'e ja sakte hain. Lamba aur
+anokha password rakhein.
+
+Asli hal (aane wale marhale ke liye):
+  - Firebase Authentication + rules jo uid / admin check karen, ya
+  - apna chhota server (backend).
+
+GitHub: backup repo hamesha PRIVATE rakhein. Token ko kabhi chat, screenshot
+ya public repo mein na dalein. Shak ho to token delete karke naya banayein.
+
+
+=====================================================================
+MASLAY AUR HAL (Troubleshooting)
+=====================================================================
+"Connect nahi hua: Failed to fetch"
+   -> URL ghalat ya https nahi, internet band, ad-blocker, ya app
+      claude.ai link par khuli hai (wahan block hota hai). GitHub Pages
+      link se kholein.
+
+"Permission denied" / status 401 ya 403 (Database)
+   -> Rules publish nahi hue, ghalat rules, ya Rules B ke saath access
+      key nahi di.
+
+Status "Offline"
+   -> Internet ya live connection toot gaya. Page refresh karein.
+
+Status "Error"
+   -> Likhne mein fail (rules ki validate sharait ya network). Cloud
+      page par "Abhi Push" dabayein.
+
+Naye device par login nahi hota
+   -> Device Database se connect nahi hua. PRESET_DB wali line ya
+      Admin ka diya hua ?db= link istemal karein.
+
+GitHub 401 / 403
+   -> Token ghalat, expire, ya Contents: Read and write ijazat nahi.
+
+GitHub 404 (Load par)
+   -> Owner / repo / branch / path ghalat, ya file abhi bani nahi.
+      (Save par pehli bar 404 normal hai, file bana di jati hai.)
+
+GitHub 409 ya 422
+   -> Do jagah se ek saath save hua ya branch ka naam ghalat. Dobara
+      koshish karein.
+
+imgbb "upload nahi hua"
+   -> Key ghalat, tasveer bohat bari, ya network. Tasveer local mehfooz
+      ho jati hai, baad mein dobara upload kar sakte hain.
+
+"Storage bhar gaya"
+   -> Browser ki jagah (~5MB) khatam. imgbb key lagayein, tasveeren
+      chhoti rakhein, ya purane records hata dein.
+
+Do devices par ek saath badlaav
+   -> Jis ne aakhir mein save kiya wo jeetta hai (last-write-wins).
+      Zaroori badlaav ke waqt ek hi device istemal karein.
+
+
+=====================================================================
+BROWSER MEIN KAUN SI CHEEZEIN SAVE HOTI HAIN
+=====================================================================
+gharmate2          poora local data (accounts + workspaces)
+gm_ses             login session ka user id
+gm_db              Database URL aur access key (is device ki)
+gm_gh              GitHub settings aur token (sirf is device ki)
+gharmate_recovery  restore / load se pehle ki recovery copy
+gharmate           purana (pehle version) ka data, Admin banne par
+                   us ke account mein muntaqil ho jata hai
+
+
+=====================================================================
+TEST CHECKLIST (live karne se pehle)
+=====================================================================
+[ ] Home bina login khulta hai, kisi button par jate hi login aata hai
+[ ] Admin email se account bana aur Admin Panel dikhta hai
+[ ] Doosre email se Malik account bana, Admin Panel nahi dikhta
+[ ] Database connect hua, status "Synced"
+[ ] Doosre device par (PRESET_DB / ?db= link se) wahi account login hota hai
+[ ] Malik ko Admin Panel, Cloud Settings aur Database ki koi setting nahi dikhti
+[ ] Malik ne ghar ki poori tafseel + bill ke baghair submit try kiya:
+    submit nahi hua
+[ ] Poori tafseel ke saath ghar bheja: "approval ka intezaar"
+[ ] Admin ko pending ghar, tafseel aur bill dikha, Approve karne ke
+    baad malik ke device par status badal gaya
+[ ] Approve se pehle us ghar mein kirayedaar shamil nahi ho saka
+[ ] Block (1 din) kiya: user ko login se roka gaya; Unblock par chal gaya
+[ ] Account delete par Database se bhi gaya
+[ ] imgbb key ke baad tasveer ka link database mein gaya
+[ ] GitHub "JSON Save" se file ban gayi, "JSON Load" se wapas aya
+[ ] Dark / light mode aur phone screen par theek dikhta hai
+=====================================================================
+
+=====================================================================
+HOUSES.JSON AUR IMAGES FOLDER (GitHub par ghar ka catalog)
+=====================================================================
+Do alag jagah data rehta hai:
+  * houses.json + images/ folder (GitHub, aap/Admin ke haath se edit)
+        -> "Ghar Catalog": khali / kiraye par gharon ki public list,
+           tasveeron ke saath. Sab ko dikhti hai (tap karne par login
+           zaroori).
+  * Realtime Database
+        -> users ke accounts aur unka apna data (ghar, kirayedaar,
+           adaigiyan, approval wagaira).
+
+GitHub repo ka dhancha (gharmate-site.zip mein tayyar hai):
+    index.html        (app)
+    houses.json       (ghar ki list)
+    images/           (tasveeren)
+
+Upload: zip khol kar saari files apne GitHub Pages repo mein upload
+karein (images folder samet), phir Settings > Pages se host karein.
+Ye repo PUBLIC hogi, is liye houses.json mein koi hassas maloomat
+(CNIC, bijli bill, private phone) na likhein.
+
+NAYA GHAR JSON MEIN JORNA
+1. GitHub par repo > houses.json > pencil (Edit) icon.
+2. "houses" list mein aakhri } ke baad comma laga kar naya block jorein
+   (kisi purane block ki copy bana kar badal dein).
+3. "Commit changes" dabayein.
+4. 1-10 minute mein app ke "Ghar Catalog" mein aa jata hai.
+
+TASVEERON KA TAREEQA
+- Folder mein file daalein: repo > images folder > Add file > Upload
+  files. Phir houses.json mein sirf naam likhein:
+      "cover": "dha-221-front.jpg",
+      "images": ["dha-221-front.jpg", "dha-221-lounge.jpg"]
+- Ya poora link bhi likh sakte hain (mis. imgbb ka link):
+      "images": ["https://i.ibb.co/xxxxxx/photo.jpg"]
+- File ka naam bilkul wahi likhein jo folder mein hai (chhote/bare harf
+  farq karte hain), bina space ke.
+- Tasveer 1200px chauri aur 500KB se kam rakhein.
+- Agar "imageBase" badalna chahein (mis. kisi aur folder ka naam), to
+  houses.json ke upar wali "imageBase" line badal dein.
+
+HAR GHAR KE KHANAY
+  id        har ghar ki alag pehchan (mis. "g4")        zaroori
+  name      ghar ka naam / number                       zaroori
+  country   mis. "Pakistan"
+  city      shehar                                       zaroori
+  area      ilaqa / society
+  address   pura pata
+  type      "House", "Portion", "Flat", "Villa" ...
+  size      number (mis. 5)       unit: "Marla" / "Kanal" / ...
+  floors    manzilein (number)
+  rent      mahana kiraya (number)                       zaroori
+  adv       advance (number)
+  status    "khali" ya "kiraye par"
+  desc      chhoti tafseel
+  rooms     [{"t":"Bedroom","n":3}, {"t":"Bathroom","n":2}]
+  feat      ["Gas","Bijli","Pani","AC","Parking"]
+  cover     pehli (cover) tasveer ka naam
+  images    tasveeron ki list
+  contact   {"name":"...","phone":"03xx-xxxxxxx"} (WhatsApp button isi se)
+
+JSON ki aam ghaltiyan: aakhri item ke baad comma, ghalat quotes, ya
+bracket band karna bhool jana. Bharne ke baad jsonlint.com par check
+kar sakte hain. Ghalti ho to app mein "houses.json nahi mili" ka
+paigham aata hai.
+
+CLAUDE.AI LINK PAR: wahan houses.json nahi milti (sirf GitHub Pages
+par kaam karta hai).
