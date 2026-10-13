@@ -1,0 +1,168 @@
+{
+  "_readme": "Is file mein ghar add karne ke liye 'houses' list mein ek naya {...} block jorein. Tasveeren images/ folder mein rakhein aur sirf file ka naam likhein (mis. g1-1.jpg) ya poora link (https://...). Har id alag honi chahiye. status: 'khali' ya 'kiraye par'. Comma aur quotes ka khayal rakhein. Ye _readme wali line hata sakte hain.",
+  "version": 1,
+  "imageBase": "images/",
+  "houses": [
+    {
+      "id": "g1",
+      "name": "Ghar 221",
+      "country": "Pakistan",
+      "city": "Lahore",
+      "area": "DHA Phase 5",
+      "address": "Ghar 221, Street 7, DHA Phase 5, Lahore",
+      "type": "House",
+      "size": 1,
+      "unit": "Kanal",
+      "floors": 2,
+      "rent": 180000,
+      "adv": 360000,
+      "status": "khali",
+      "desc": "Kushada, hawadar ghar. Do manzil, bara lawn aur do gari ki parking.",
+      "rooms": [
+        {
+          "t": "Bedroom",
+          "n": 5
+        },
+        {
+          "t": "Bathroom",
+          "n": 4
+        },
+        {
+          "t": "Kitchen",
+          "n": 1
+        },
+        {
+          "t": "Drawing Room",
+          "n": 1
+        },
+        {
+          "t": "Lounge",
+          "n": 1
+        },
+        {
+          "t": "Garage",
+          "n": 1
+        }
+      ],
+      "feat": [
+        "Gas",
+        "Bijli",
+        "Pani",
+        "AC",
+        "Parking",
+        "Lawn",
+        "Generator"
+      ],
+      "cover": "g1-1.svg",
+      "images": [
+        "g1-1.svg",
+        "g1-2.svg"
+      ],
+      "contact": {
+        "name": "Ali Raza",
+        "phone": "0300-0000000"
+      }
+    },
+    {
+      "id": "g2",
+      "name": "Ghar 14-A",
+      "country": "Pakistan",
+      "city": "Karachi",
+      "area": "Gulshan-e-Iqbal",
+      "address": "Ghar 14-A, Block 13-D, Gulshan-e-Iqbal, Karachi",
+      "type": "House",
+      "size": 5,
+      "unit": "Marla",
+      "floors": 2,
+      "rent": 45000,
+      "adv": 90000,
+      "status": "kiraye par",
+      "desc": "Pur-sukoon ilaqay mein 5 marla ka ghar.",
+      "rooms": [
+        {
+          "t": "Bedroom",
+          "n": 3
+        },
+        {
+          "t": "Bathroom",
+          "n": 2
+        },
+        {
+          "t": "Kitchen",
+          "n": 1
+        },
+        {
+          "t": "Drawing Room",
+          "n": 1
+        },
+        {
+          "t": "Lounge",
+          "n": 1
+        }
+      ],
+      "feat": [
+        "Gas",
+        "Bijli",
+        "Pani",
+        "Boring"
+      ],
+      "cover": "g2-1.svg",
+      "images": [
+        "g2-1.svg",
+        "g2-2.svg"
+      ],
+      "contact": {
+        "name": "Ali Raza",
+        "phone": "0300-0000000"
+      }
+    },
+    {
+      "id": "g3",
+      "name": "Ghar 7-B",
+      "country": "Pakistan",
+      "city": "Islamabad",
+      "area": "G-13",
+      "address": "Ghar 7-B, G-13/2, Islamabad",
+      "type": "Portion",
+      "size": 7,
+      "unit": "Marla",
+      "floors": 1,
+      "rent": 60000,
+      "adv": 120000,
+      "status": "khali",
+      "desc": "Upar wala portion, alag meter.",
+      "rooms": [
+        {
+          "t": "Bedroom",
+          "n": 2
+        },
+        {
+          "t": "Bathroom",
+          "n": 2
+        },
+        {
+          "t": "Kitchen",
+          "n": 1
+        },
+        {
+          "t": "Lounge",
+          "n": 1
+        }
+      ],
+      "feat": [
+        "Gas",
+        "Bijli",
+        "Pani",
+        "Internet"
+      ],
+      "cover": "g3-1.svg",
+      "images": [
+        "g3-1.svg"
+      ],
+      "contact": {
+        "name": "Ali Raza",
+        "phone": "0300-0000000"
+      }
+    }
+  ]
+}
